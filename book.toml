@@ -1,0 +1,6 @@
+[book]
+authors = ["ryan kurte"]
+language = "en"
+multilingual = false
+src = "."
+title = "Embedded WebAssembly (WASM)"
