@@ -6,6 +6,8 @@ The WASI APIs are intended to span from basic peripheral drivers like SPI and I2
 
 The project provides an API specification with runtimes to support the execution of this and Hardware Abstraction Layers (HALs) for application development. To get started using embedded-wasm, grab the relevant components and/or check out the [Getting Started](./02-getting-started) section.
 
+You might also be interested in the [chat](https://app.element.io/#/room/#wasm-embedded:matrix.org) and project [meta issue](https://github.com/embedded-wasm/spec/issues/2).
+
 
 ## Components
 
@@ -31,7 +33,7 @@ You can install this with `cargo install wasm-embedded-rt` or grab a binary from
 
 #### [wasm-embedded-rt-wasmtime](https://github.com/embedded-wasm/rt_wasmtime)
 
-A Rust/wasmtime based runtime for application use, built into `wasm-embedded-rt` with the `rt_wasmtime` feature.
+A Rust/wasmtime based engine for application use, built into `wasm-embedded-rt` with the `rt_wasmtime` feature.
 
 [![Crates.io](https://img.shields.io/crates/v/wasm-embedded-rt-wasmtime.svg)](https://crates.io/crates/wasm-embedded-rt-wasmtime)
 [![Docs.rs](https://docs.rs/wasm-embedded-rt-wasmtime/badge.svg)](https://docs.rs/wasm-embedded-rt-wasmtime)
@@ -41,12 +43,12 @@ Typically you'll want to embed this library in your project, either as a git sub
 
 #### [wasm-embedded-rt-wasm3](https://github.com/embedded-wasm/rt_wasm3)
 
-A C/wasm3 based runtime designed for embedding, built into `wasm-embedded-rt-wasm3` with the `rt_wasm3` feature.
+A C/wasm3 based engine designed for embedding, built into `wasm-embedded-rt-wasm3` with the `rt_wasm3` feature.
 
 [![Crates.io](https://img.shields.io/crates/v/wasm-embedded-rt-wasm3.svg)](https://crates.io/crates/wasm-embedded-rt-wasm3)
 [![Docs.rs](https://docs.rs/wasm-embedded-rt-wasm3/badge.svg)](https://docs.rs/wasm-embedded-rt-wasm3)
 
-Typically you'll want to embed this library in your project, either as a cargo dependency, git submodule or by copying out the `lib` directory.
+Typically you'll want to embed this library in your project, either as a cargo dependency, git submodule or by copying out the relevant directories (note for C use you will also need headers from `embedded-wasm/spec`).
 
 
 ### Hardware Abstraction Layers (HALs)
