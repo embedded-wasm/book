@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions: 'read-all|write-all'
+
 env:
   CARGO_TERM_COLOR: always
 
@@ -32,4 +34,4 @@ jobs:
         with:
           build_dir: ./build
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
