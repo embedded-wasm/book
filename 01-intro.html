@@ -135,9 +135,45 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>This project defines WASI APIs for embedded devices with the aim of providing a common language and platform independent runtime for embedded use, simplifying targetting a variety of embedded platforms, supporting dynamic discovery and hot reloading of applications, and making it easy to design / share / mess with embedded things.</p>
-<p>The WASI APIs are intended to span from basic peripheral drivers like SPI and I2C, to more complex functionality like driving LEDs or displays and publishing or subscribing to data. Everything one could need to write unreasonably portable IoT applications.</p>
-<p>To get started using embedded-wasm, check out the <a href="./02-getting-started">Getting Started</a> section.</p>
+<p>This project defines WASI APIs for embedded devices with the aim of providing common language and platform independent runtimes for embedded use, allowing applications to be abstract from platforms, supporting dynamic discovery and hot reloading of applications, and making it easy to design / share / mess with embedded things.</p>
+<p>The WASI APIs are intended to span from basic peripheral drivers like SPI and I2C, to more complex functionality like driving LEDs or displays and publishing or subscribing to data. Everything one could need to write unreasonably portable embedded applications.</p>
+<p>The project provides an API specification with runtimes to support the execution of this and Hardware Abstraction Layers (HALs) for application development. To get started using embedded-wasm, grab the relevant components and/or check out the <a href="./02-getting-started">Getting Started</a> section.</p>
+<h2 id="components"><a class="header" href="#components">Components</a></h2>
+<h2 id="specification"><a class="header" href="#specification"><a href="https://github.com/embedded-wasm/spec">Specification</a></a></h2>
+<p>The <a href="https://github.com/embedded-wasm/spec">embedded-wasm/spec</a> project provides the <code>witx</code> API specification as well as helper abstractions for platform implementations and standard tests for HAL/runtime interoperability.</p>
+<p><a href="https://crates.io/crates/wasm-embedded-spec"><img src="https://img.shields.io/crates/v/wasm-embedded-spec.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/wasm-embedded-spec"><img src="https://docs.rs/wasm-embedded-spec/badge.svg" alt="Docs.rs" /></a></p>
+<h3 id="runtimes"><a class="header" href="#runtimes">Runtimes</a></h3>
+<h4 id="wasm-embedded-rt"><a class="header" href="#wasm-embedded-rt"><a href="https://github.com/embedded-wasm/rt">wasm-embedded-rt</a></a></h4>
+<p>An embedded-wasm runtime for execution on linux / macOS / windows, wrapping specific runtime implementations to provide a ready-to-go binary. This supports mocking on all platforms, with physical hardware access only on linux (for now?).</p>
+<p><a href="https://crates.io/crates/wasm-embedded-rt"><img src="https://img.shields.io/crates/v/wasm-embedded-rt.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/wasm-embedded-rt"><img src="https://docs.rs/wasm-embedded-rt/badge.svg" alt="Docs.rs" /></a></p>
+<p>You can install this with <code>cargo install wasm-embedded-rt</code> or grab a binary from the <a href="https://github.com/embedded-wasm/rt/releases/latest">releases</a> page.</p>
+<h4 id="wasm-embedded-rt-wasmtime"><a class="header" href="#wasm-embedded-rt-wasmtime"><a href="https://github.com/embedded-wasm/rt_wasmtime">wasm-embedded-rt-wasmtime</a></a></h4>
+<p>A Rust/wasmtime based runtime for application use, built into <code>wasm-embedded-rt</code> with the <code>rt_wasmtime</code> feature.</p>
+<p><a href="https://crates.io/crates/wasm-embedded-rt-wasmtime"><img src="https://img.shields.io/crates/v/wasm-embedded-rt-wasmtime.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/wasm-embedded-rt-wasmtime"><img src="https://docs.rs/wasm-embedded-rt-wasmtime/badge.svg" alt="Docs.rs" /></a></p>
+<p>Typically you'll want to embed this library in your project, either as a git submodule or by copying out the <code>lib</code> directory.</p>
+<h4 id="wasm-embedded-rt-wasm3"><a class="header" href="#wasm-embedded-rt-wasm3"><a href="https://github.com/embedded-wasm/rt_wasm3">wasm-embedded-rt-wasm3</a></a></h4>
+<p>A C/wasm3 based runtime designed for embedding, built into <code>wasm-embedded-rt-wasm3</code> with the <code>rt_wasm3</code> feature.</p>
+<p><a href="https://crates.io/crates/wasm-embedded-rt-wasm3"><img src="https://img.shields.io/crates/v/wasm-embedded-rt-wasm3.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/wasm-embedded-rt-wasm3"><img src="https://docs.rs/wasm-embedded-rt-wasm3/badge.svg" alt="Docs.rs" /></a></p>
+<p>Typically you'll want to embed this library in your project, either as a cargo dependency, git submodule or by copying out the <code>lib</code> directory.</p>
+<h3 id="hardware-abstraction-layers-hals"><a class="header" href="#hardware-abstraction-layers-hals">Hardware Abstraction Layers (HALs)</a></h3>
+<h4 id="rust"><a class="header" href="#rust">Rust</a></h4>
+<p>Rust bindings based on <a href="https://github.com/rust-embedded/embedded-hal">embedded-hal</a>.</p>
+<p><a href="https://crates.io/crates/wasm-embedded-hal"><img src="https://img.shields.io/crates/v/wasm-embedded-hal.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/wasm-embedded-hal"><img src="https://docs.rs/wasm-embedded-hal/badge.svg" alt="Docs.rs" /></a></p>
+<p>Add this to your project with <code>cargo add wasm-embedded-hal</code>.</p>
+<h4 id="assemblyscript"><a class="header" href="#assemblyscript">AssemblyScript</a></h4>
+<p>Bindings for <a href="https://www.assemblyscript.org">AssemblyScript</a>, compiled with <code>asc</code>.</p>
+<p><a href="https://npmjs.com/package/wasm-embedded-hal"><img src="https://img.shields.io/npm/v/wasm-embedded-hal" alt="npm" /></a></p>
+<p>Add this to your project with <code>npm install --save wasm-embedded-hal</code>.</p>
+<h3 id="tools"><a class="header" href="#tools">Tools</a></h3>
+<h4 id="wasm-embedded-cli"><a class="header" href="#wasm-embedded-cli"><a href="">wasm-embedded-cli</a></a></h4>
+<p>WIP: A command line interface for interacting with embedded-wasm capable devices.</p>
+<p><a href="https://crates.io/crates/wasm-embedded-cli"><img src="https://img.shields.io/crates/v/wasm-embedded-cli.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/wasm-embedded-cli"><img src="https://docs.rs/wasm-embedded-cli/badge.svg" alt="Docs.rs" /></a></p>
 
                     </main>
 

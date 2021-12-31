@@ -139,10 +139,12 @@
 <p>Heads up that there are a lot of moving parts, and it's definitely not a <em>simple</em> process (sorry!). We hope that in future more of this will be generated / automated, but we're waiting for the <a href="https://github.com/WebAssembly/WASI/blob/main/docs/witx.md">WITX</a> specification to stabilise before this is likely. If you have any ideas for simplifying the process please do let us know!</p>
 <p><strong>Please note these instructions were moved from a prior monorepo version of this project, the <em>concept</em> is the same but the links and components are yet to be updated. You can see the original docs <a href="https://ryan.kurte.nz/embedded-wasm">here</a></strong></p>
 <h2 id="updating-the-docs"><a class="header" href="#updating-the-docs">Updating the docs</a></h2>
-<p><a href="https://github.com/embedded-wasm/book">embedded-wasm/book</a> contains these docs, please feel free to open a PR!</p>
+<p>The <a href="https://github.com/embedded-wasm/book">embedded-wasm/book</a> project contains these docs, please feel free to open a PR!</p>
 <h2 id="proposing-an-api"><a class="header" href="#proposing-an-api">Proposing an API</a></h2>
-<p>So recon we're missing a useful API? (you're probably right). Before going down the implementation path you may wish to open an <a href="">issue</a> for discussion.</p>
-<p>Once you're ready to implement, there are a few steps to the process. You'll need to be familiar with building rust and C projects, and you'll need to setup a workspace to coordinate these changes between components. If you run into any roadblocks please open an issue!</p>
+<p>So you recon we're missing a useful API? (you're probably right). Before going down the implementation path you may wish to open an <a href="https://github.com/embedded-wasm/spec/issues/new">issue</a> for discussion.</p>
+<p>Once you're ready to implement, there are a few steps to the process. You'll need to be familiar with building rust and C projects, and you'll need to setup a workspace to coordinate these changes between components. If you run into any roadblocks, again, please open an issue or PR!</p>
+<h2 id="setting-up-your-workspace"><a class="header" href="#setting-up-your-workspace">Setting up your workspace</a></h2>
+<p>First you'll need to setup a workspace containing the subprojects, we suggest using <a href="./assets/bootstrap.sh"><code>bootstrap.sh</code></a>.</p>
 <h3 id="updating-the-specification"><a class="header" href="#updating-the-specification">Updating the <a href="https://github.com/embedded-wasm/spec">specification</a></a></h3>
 <ul>
 <li>Add a <a href="">witx</a> specification for the protocol to the <code>witx</code> folder (see <a href="https://github.com/embedded-wasm/spec/blob/main/witx/spi.witx">witx/spi.witx</a> for an example)</li>
@@ -150,14 +152,13 @@
 <li>Add rust platform API to <code>src/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/src/spi.rs">src/spi.rs</a> for an example)</li>
 <li>Add C platform API to <code>lib/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h">inc/wasm_embedded/spi.h</a> for an example)</li>
 <li>Add a test definition to <code>tests/</code> for qualification of runtimes / HALs</li>
+<li>Check with <code>cargo check --all-features</code></li>
 </ul>
 <h3 id="updating-the-runtimes"><a class="header" href="#updating-the-runtimes">Updating the runtimes</a></h3>
-<p>You will first need to implement each of your API for the underlying <code>rt-wasm3</code> or <code>rt-wasmtime</code> runtime, then in <code>wasm-embedded-rt</code>:</p>
-<ul>
-<li>Add a mock implementation to <code>src/mock/</code> for mock execution, see <a href="https://github.com/ryankurte/embedded-wasm/rt/tree/main/src/mock/i2c.rs">src/mock/i2c.rs</a> for an example</li>
-<li>Add a linux implementation to <code>src/linux/</code> for runtime use, see <a href="https://github.com/ryankurte/embedded-wasm/rt/tree/main/src/linux/i2c.rs">src/linux/i2c.rs</a> for an example</li>
-</ul>
-<h3 id="updating-rt-wasm3"><a class="header" href="#updating-rt-wasm3">Updating rt-wasm3</a></h3>
+<p>You will first need to implement your API for the each of the underlying <code>rt-wasm3</code> or <code>rt-wasmtime</code> engines, then in <code>wasm-embedded-rt</code>.</p>
+<h4 id="updating-rt-wasmtime"><a class="header" href="#updating-rt-wasmtime">Updating rt-wasmtime</a></h4>
+<p>TODO: not yet split from <code>rt</code>.</p>
+<h4 id="updating-rt-wasm3"><a class="header" href="#updating-rt-wasm3">Updating rt-wasm3</a></h4>
 <p>The <code>rt-wasm3</code> C library is designed to simplify porting and embedding. A simple Object Oriented C / VTable style object is defined in the spec for each API, hiding the runtime implementation from the user and supporting dependency injection and other useful testing tricks.</p>
 <p>To add an API:</p>
 <ul>
@@ -181,27 +182,34 @@
 <li><code>make</code> to perform a build</li>
 </ul>
 <p>When the runtime is built with <code>--features=wasm3</code> the <code>ewasm</code> library will also be included. You can use this instead however, the logs exposed when building under cargo leave a lot to be desired.</p>
+<h4 id="updating-rt"><a class="header" href="#updating-rt">Updating <code>rt</code></a></h4>
+<ul>
+<li>Add a mock implementation to <code>src/mock/</code> for mock execution, see <a href="https://github.com/embedded-wasm/rt/tree/main/src/mock/i2c.rs">src/mock/i2c.rs</a> for an example</li>
+<li>Add a linux implementation to <code>src/linux/</code> for runtime use, see <a href="https://github.com/embedded-wasm/rt/tree/main/src/linux/i2c.rs">src/linux/i2c.rs</a> for an example</li>
+</ul>
 <h3 id="updating-the-hal-rust"><a class="header" href="#updating-the-hal-rust">Updating the HAL (rust)</a></h3>
 <p>This HAL exposes the API to rust users, providing an implementation of <a href="https://github.com/rust-embedded/embedded-hal">embedded-hal</a>.</p>
 <ul>
 <li>Create a new source file in <a href="">hal_rs/src/</a> for the new API</li>
 <li>Create an API module with <code>extern</code> definitions for the WASI interface</li>
-<li>Create a wrapper type for the API object, using the handle and <code>extern</code> functions, see <a href="https://github.com/ryankurte/embedded-wasm/blob/main/hal_rs/src/i2c.rs">hal_rs/src/i2c.rs</a> for an example</li>
+<li>Create a wrapper type for the API object, using the handle and <code>extern</code> functions, see <a href="https://github.com/embedded-wasm/hal_rs/blob/main/src/i2c.rs">hal_rs/src/i2c.rs</a> for an example</li>
+<li>Update the tests list in <code>.github/workflows/ci.yml</code></li>
 </ul>
 <h3 id="updating-the-hal-assemblyscript"><a class="header" href="#updating-the-hal-assemblyscript">Updating the HAL (AssemblyScript)</a></h3>
 <p>This HAL exposes the API to AssemblyScript users. </p>
 <ul>
 <li>Create a new source file in <a href="">hal_rs/src/</a> for the new API</li>
 <li>Create an API module with <code>extern</code> definitions for the WASI interface</li>
-<li>Create a wrapper type for the API object, using the handle and <code>extern</code> functions, see <a href="https://github.com/ryankurte/embedded-wasm/blob/main/hal_rs/src/i2c.rs">hal_rs/src/i2c.rs</a> for an example</li>
+<li>Create a wrapper type for the API object, using the handle and <code>extern</code> functions, see <a href="https://github.com/embedded-wasm/hal_rs/blob/main/src/i2c.rs">hal_rs/src/i2c.rs</a> for an example</li>
+<li>Update the tests list in <code>.github/workflows/ci.yml</code></li>
 </ul>
 <h3 id="testing-your-changes"><a class="header" href="#testing-your-changes">Testing your changes</a></h3>
 <p>TODO</p>
 <h2 id="hints"><a class="header" href="#hints">Hints</a></h2>
 <ul>
-<li>All APIs use integer handles for each device/peripheral to avoid passing around opaque objects
+<li>All APIs use integer handles for each device/peripheral managed by the platform to avoid the need to pass opaque objects
 <ul>
-<li>On initialisation a positive handle should be returned</li>
+<li>On initialisation a positive handle should be returned, on error a negative code</li>
 <li>These handles are managed by the runtime and should be closed or will be cleaned-up on exit</li>
 </ul>
 </li>
@@ -216,7 +224,7 @@
 <li>WITX allows multiple returns, in practice this <em>may</em> resolve to an extra argument in the function call (eg. <code>fn do(a) -&gt; Result&lt;b, c&gt;</code> becomes <code>fn do(a, &amp;mut b) -&gt; c</code> in WASM)</li>
 </ul>
 </li>
-<li>The makefile re-maps a bunch of generated file paths to approximate using a workspace, this is helpful because workspaces do not support multiple targets</li>
+<li>A <a href="https://github.com/bytecodealliance/wasmtime/issues/3519">bug</a> with <code>wiggle</code> means <code>witx</code> path resolution breaks when using workspaces, resulting in an <code>error: proc macro panicked</code> and a bunch of <code>error[E0432]: unresolved import</code>s. Patch <code>wasm-embedded-spec</code> using a folder outside the workspace or a git version until this is resolved</li>
 </ul>
 
                     </main>
