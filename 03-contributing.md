@@ -8,13 +8,18 @@ Heads up that there are a lot of moving parts, and it's definitely not a _simple
 
 ## Updating the docs
 
-[embedded-wasm/book](https://github.com/embedded-wasm/book) contains these docs, please feel free to open a PR!
+The [embedded-wasm/book](https://github.com/embedded-wasm/book) project contains these docs, please feel free to open a PR!
+
 
 ## Proposing an API
 
-So recon we're missing a useful API? (you're probably right). Before going down the implementation path you may wish to open an [issue]() for discussion.
+So you recon we're missing a useful API? (you're probably right). Before going down the implementation path you may wish to open an [issue](https://github.com/embedded-wasm/spec/issues/new) for discussion.
 
-Once you're ready to implement, there are a few steps to the process. You'll need to be familiar with building rust and C projects, and you'll need to setup a workspace to coordinate these changes between components. If you run into any roadblocks please open an issue!
+Once you're ready to implement, there are a few steps to the process. You'll need to be familiar with building rust and C projects, and you'll need to setup a workspace to coordinate these changes between components. If you run into any roadblocks, again, please open an issue or PR!
+
+## Setting up your workspace
+
+First you'll need to setup a workspace containing the subprojects, we suggest using [`bootstrap.sh`](./assets/bootstrap.sh).
 
 ### Updating the [specification](https://github.com/embedded-wasm/spec)
 
@@ -23,16 +28,18 @@ Once you're ready to implement, there are a few steps to the process. You'll nee
 - Add rust platform API to `src/` (see [src/spi.rs](https://github.com/embedded-wasm/spec/blob/main/src/spi.rs) for an example)
 - Add C platform API to `lib/` (see [inc/wasm_embedded/spi.h](https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h) for an example)
 - Add a test definition to `tests/` for qualification of runtimes / HALs
+- Check with `cargo check --all-features`
 
 ### Updating the runtimes
 
-You will first need to implement each of your API for the underlying `rt-wasm3` or `rt-wasmtime` runtime, then in `wasm-embedded-rt`:
+You will first need to implement your API for the each of the underlying `rt-wasm3` or `rt-wasmtime` engines, then in `wasm-embedded-rt`.
 
-- Add a mock implementation to `src/mock/` for mock execution, see [src/mock/i2c.rs](https://github.com/ryankurte/embedded-wasm/rt/tree/main/src/mock/i2c.rs) for an example
-- Add a linux implementation to `src/linux/` for runtime use, see [src/linux/i2c.rs](https://github.com/ryankurte/embedded-wasm/rt/tree/main/src/linux/i2c.rs) for an example
+#### Updating rt-wasmtime
+
+TODO: not yet split from `rt`.
 
 
-### Updating rt-wasm3
+#### Updating rt-wasm3
 
 The `rt-wasm3` C library is designed to simplify porting and embedding. A simple Object Oriented C / VTable style object is defined in the spec for each API, hiding the runtime implementation from the user and supporting dependency injection and other useful testing tricks.
 
@@ -56,6 +63,11 @@ When working with the library you can build with `make lib`, or use the classic 
 
 When the runtime is built with `--features=wasm3` the `ewasm` library will also be included. You can use this instead however, the logs exposed when building under cargo leave a lot to be desired.
 
+#### Updating `rt`
+
+- Add a mock implementation to `src/mock/` for mock execution, see [src/mock/i2c.rs](https://github.com/embedded-wasm/rt/tree/main/src/mock/i2c.rs) for an example
+- Add a linux implementation to `src/linux/` for runtime use, see [src/linux/i2c.rs](https://github.com/embedded-wasm/rt/tree/main/src/linux/i2c.rs) for an example
+
 
 ### Updating the HAL (rust)
 
@@ -63,7 +75,8 @@ This HAL exposes the API to rust users, providing an implementation of [embedded
 
 - Create a new source file in [hal_rs/src/]() for the new API
 - Create an API module with `extern` definitions for the WASI interface
-- Create a wrapper type for the API object, using the handle and `extern` functions, see [hal_rs/src/i2c.rs](https://github.com/ryankurte/embedded-wasm/blob/main/hal_rs/src/i2c.rs) for an example
+- Create a wrapper type for the API object, using the handle and `extern` functions, see [hal_rs/src/i2c.rs](https://github.com/embedded-wasm/hal_rs/blob/main/src/i2c.rs) for an example
+- Update the tests list in `.github/workflows/ci.yml`
 
 
 ### Updating the HAL (AssemblyScript)
@@ -72,7 +85,8 @@ This HAL exposes the API to AssemblyScript users.
 
 - Create a new source file in [hal_rs/src/]() for the new API
 - Create an API module with `extern` definitions for the WASI interface
-- Create a wrapper type for the API object, using the handle and `extern` functions, see [hal_rs/src/i2c.rs](https://github.com/ryankurte/embedded-wasm/blob/main/hal_rs/src/i2c.rs) for an example
+- Create a wrapper type for the API object, using the handle and `extern` functions, see [hal_rs/src/i2c.rs](https://github.com/embedded-wasm/hal_rs/blob/main/src/i2c.rs) for an example
+- Update the tests list in `.github/workflows/ci.yml`
 
 ### Testing your changes
 
@@ -81,12 +95,12 @@ TODO
 
 ## Hints
 
-- All APIs use integer handles for each device/peripheral to avoid passing around opaque objects
-  - On initialisation a positive handle should be returned
+- All APIs use integer handles for each device/peripheral managed by the platform to avoid the need to pass opaque objects
+  - On initialisation a positive handle should be returned, on error a negative code
   - These handles are managed by the runtime and should be closed or will be cleaned-up on exit
 - Remember that the WASM runtime has it's own address space
   - Function calls with objects will resolve to an integer address that must be translated before access
   - If an object contains a pointer you will also need to translate this prior to accessing containing data
 - The WASM call ABI is not yet stable / widely supported
   - WITX allows multiple returns, in practice this _may_ resolve to an extra argument in the function call (eg. `fn do(a) -> Result<b, c>` becomes `fn do(a, &mut b) -> c` in WASM)
-- The makefile re-maps a bunch of generated file paths to approximate using a workspace, this is helpful because workspaces do not support multiple targets
+- A [bug](https://github.com/bytecodealliance/wasmtime/issues/3519) with `wiggle` means `witx` path resolution breaks when using workspaces, resulting in an `error: proc macro panicked` and a bunch of `error[E0432]: unresolved import`s. Patch `wasm-embedded-spec` using a folder outside the workspace or a git version until this is resolved
