@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions: 'read-all|write-all'
-
 env:
   CARGO_TERM_COLOR: always
 
@@ -30,7 +28,7 @@ jobs:
           ./mdbook build --dest-dir build
 
       - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v1.2.4
         with:
           build_dir: ./build
         env:
