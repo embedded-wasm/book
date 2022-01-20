@@ -144,7 +144,9 @@
 <p>So you recon we're missing a useful API? (you're probably right). Before going down the implementation path you may wish to open an <a href="https://github.com/embedded-wasm/spec/issues/new">issue</a> for discussion.</p>
 <p>Once you're ready to implement, there are a few steps to the process. You'll need to be familiar with building rust and C projects, and you'll need to setup a workspace to coordinate these changes between components. If you run into any roadblocks, again, please open an issue or PR!</p>
 <h2 id="setting-up-your-workspace"><a class="header" href="#setting-up-your-workspace">Setting up your workspace</a></h2>
-<p>First you'll need to setup a workspace containing the subprojects, we suggest using <a href="./assets/bootstrap.sh"><code>bootstrap.sh</code></a>.</p>
+<p>First you'll need to setup a workspace containing the subprojects, we suggest using <a href="./assets/bootstrap.sh"><code>bootstrap.sh</code></a> which will create an <code>embedded-wasm</code> directory and check out the subprojects into this.</p>
+<pre><code>curl https://embedded-wasm.github.io/book/assets/bootstrap.sh | bash
+</code></pre>
 <h3 id="updating-the-specification"><a class="header" href="#updating-the-specification">Updating the <a href="https://github.com/embedded-wasm/spec">specification</a></a></h3>
 <ul>
 <li>Add a <a href="">witx</a> specification for the protocol to the <code>witx</code> folder (see <a href="https://github.com/embedded-wasm/spec/blob/main/witx/spi.witx">witx/spi.witx</a> for an example)</li>
