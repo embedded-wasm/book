@@ -19,7 +19,11 @@ Once you're ready to implement, there are a few steps to the process. You'll nee
 
 ## Setting up your workspace
 
-First you'll need to setup a workspace containing the subprojects, we suggest using [`bootstrap.sh`](./assets/bootstrap.sh).
+First you'll need to setup a workspace containing the subprojects, we suggest using [`bootstrap.sh`](./assets/bootstrap.sh) which will create an `embedded-wasm` directory and check out the subprojects into this.
+
+```
+curl https://embedded-wasm.github.io/book/assets/bootstrap.sh | bash
+```
 
 ### Updating the [specification](https://github.com/embedded-wasm/spec)
 
