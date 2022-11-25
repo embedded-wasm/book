@@ -298,6 +298,21 @@ Scanning addresses on bus: 1
 0x70: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 </code></pre>
 <p><em>Note we're using <code>--runtime wasm3</code> here due to a bug in the <code>wasmtime</code> runtime error codes, this will be removed when resolved</em></p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<ul>
+<li><a href="https://rustwasm.github.io/">Rust WASM Book</a></li>
+<li><a href="https://docs.wasmtime.dev/">Wasmtime Guide</a></li>
+<li><a href="https://github.com/WebAssembly/WASI/blob/main/docs/witx.md">WITX format</a></li>
+<li><a href="https://github.com/jedisct1/witx-codegen">jedisct1/witx-codegen</a></li>
+<li><a href="https://github.com/WebAssembly/WASI/blob/main/phases/ephemeral/witx/">WASI WITX specification</a></li>
+<li><a href="https://github.com/ryankurte/rust-wasm-hal">ryankurte/rust-wasm-hal</a></li>
+<li><a href="https://github.com/ryankurte/esp32-wasm-base">ryankurte/esp32-wasm-base</a></li>
+<li><a href="https://github.com/h1romas4/m5stack-wasm3-testing">h1romas4/m5stack-wasm3-testing</a></li>
+<li><a href="https://github.com/rustwasm/wasm-bindgen">WASM-bindgen</a></li>
+<li>https://radu-matei.com/blog/practical-guide-to-wasm-memory/</li>
+<li>https://demille.github.io/wasm-ffi/docs/assemblyscript/</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
 <p>First make sure you've got the tools installed per <a href="./02-getting-started.html">Getting Started</a>.</p>
 <p>Heads up that there are a lot of moving parts, and it's definitely not a <em>simple</em> process (sorry!). We hope that in future more of this will be generated / automated, but we're waiting for the <a href="https://github.com/WebAssembly/WASI/blob/main/docs/witx.md">WITX</a> specification to stabilise before this is likely. If you have any ideas for simplifying the process please do let us know!</p>
@@ -315,15 +330,15 @@ Scanning addresses on bus: 1
 <ul>
 <li>Add a <a href="">witx</a> specification for the protocol to the <code>witx</code> folder (see <a href="https://github.com/embedded-wasm/spec/blob/main/witx/spi.witx">witx/spi.witx</a> for an example)</li>
 <li>Update the list of specs in <code>lib/api.rs</code> to tell <code>wiggle</code> where to find the document</li>
-<li>Add rust platform API to <code>src/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/src/spi.rs">src/spi.rs</a> for an example)</li>
-<li>Add C platform API to <code>lib/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h">inc/wasm_embedded/spi.h</a> for an example)</li>
+<li>Add an abstract trait to <code>src/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/src/spi.rs">src/spi.rs</a> for an example)</li>
+<li>Add an abstract C object to <code>lib/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h">inc/wasm_embedded/spi.h</a> for an example)</li>
 <li>Add a test definition to <code>tests/</code> for qualification of runtimes / HALs</li>
 <li>Check with <code>cargo check --all-features</code></li>
 </ul>
 <h3 id="updating-the-runtimes"><a class="header" href="#updating-the-runtimes">Updating the runtimes</a></h3>
 <p>You will first need to implement your API for the each of the underlying <code>rt-wasm3</code> or <code>rt-wasmtime</code> engines, then in <code>wasm-embedded-rt</code>.</p>
 <h4 id="updating-rt-wasmtime"><a class="header" href="#updating-rt-wasmtime">Updating rt-wasmtime</a></h4>
-<p>TODO: not yet split from <code>rt</code>.</p>
+<p>TODO: write this</p>
 <h4 id="updating-rt-wasm3"><a class="header" href="#updating-rt-wasm3">Updating rt-wasm3</a></h4>
 <p>The <code>rt-wasm3</code> C library is designed to simplify porting and embedding. A simple Object Oriented C / VTable style object is defined in the spec for each API, hiding the runtime implementation from the user and supporting dependency injection and other useful testing tricks.</p>
 <p>To add an API:</p>

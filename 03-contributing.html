@@ -151,15 +151,15 @@
 <ul>
 <li>Add a <a href="">witx</a> specification for the protocol to the <code>witx</code> folder (see <a href="https://github.com/embedded-wasm/spec/blob/main/witx/spi.witx">witx/spi.witx</a> for an example)</li>
 <li>Update the list of specs in <code>lib/api.rs</code> to tell <code>wiggle</code> where to find the document</li>
-<li>Add rust platform API to <code>src/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/src/spi.rs">src/spi.rs</a> for an example)</li>
-<li>Add C platform API to <code>lib/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h">inc/wasm_embedded/spi.h</a> for an example)</li>
+<li>Add an abstract trait to <code>src/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/src/spi.rs">src/spi.rs</a> for an example)</li>
+<li>Add an abstract C object to <code>lib/</code> (see <a href="https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h">inc/wasm_embedded/spi.h</a> for an example)</li>
 <li>Add a test definition to <code>tests/</code> for qualification of runtimes / HALs</li>
 <li>Check with <code>cargo check --all-features</code></li>
 </ul>
 <h3 id="updating-the-runtimes"><a class="header" href="#updating-the-runtimes">Updating the runtimes</a></h3>
 <p>You will first need to implement your API for the each of the underlying <code>rt-wasm3</code> or <code>rt-wasmtime</code> engines, then in <code>wasm-embedded-rt</code>.</p>
 <h4 id="updating-rt-wasmtime"><a class="header" href="#updating-rt-wasmtime">Updating rt-wasmtime</a></h4>
-<p>TODO: not yet split from <code>rt</code>.</p>
+<p>TODO: write this</p>
 <h4 id="updating-rt-wasm3"><a class="header" href="#updating-rt-wasm3">Updating rt-wasm3</a></h4>
 <p>The <code>rt-wasm3</code> C library is designed to simplify porting and embedding. A simple Object Oriented C / VTable style object is defined in the spec for each API, hiding the runtime implementation from the user and supporting dependency injection and other useful testing tricks.</p>
 <p>To add an API:</p>
