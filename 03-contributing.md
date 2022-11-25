@@ -25,8 +25,8 @@ First you'll need to setup a workspace containing the subprojects, we suggest us
 
 - Add a [witx]() specification for the protocol to the `witx` folder (see [witx/spi.witx](https://github.com/embedded-wasm/spec/blob/main/witx/spi.witx) for an example)
 - Update the list of specs in `lib/api.rs` to tell `wiggle` where to find the document
-- Add rust platform API to `src/` (see [src/spi.rs](https://github.com/embedded-wasm/spec/blob/main/src/spi.rs) for an example)
-- Add C platform API to `lib/` (see [inc/wasm_embedded/spi.h](https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h) for an example)
+- Add an abstract trait to `src/` (see [src/spi.rs](https://github.com/embedded-wasm/spec/blob/main/src/spi.rs) for an example)
+- Add an abstract C object to `lib/` (see [inc/wasm_embedded/spi.h](https://github.com/embedded-wasm/spec/blob/main/inc/wasm_embedded/spi.h) for an example)
 - Add a test definition to `tests/` for qualification of runtimes / HALs
 - Check with `cargo check --all-features`
 
@@ -36,7 +36,7 @@ You will first need to implement your API for the each of the underlying `rt-was
 
 #### Updating rt-wasmtime
 
-TODO: not yet split from `rt`.
+TODO: write this
 
 
 #### Updating rt-wasm3

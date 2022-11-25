@@ -138,3 +138,19 @@ Scanning addresses on bus: 1
 ```
 
 _Note we're using `--runtime wasm3` here due to a bug in the `wasmtime` runtime error codes, this will be removed when resolved_
+
+## References
+
+## Resources
+
+- [Rust WASM Book](https://rustwasm.github.io/)
+- [Wasmtime Guide](https://docs.wasmtime.dev/)
+- [WITX format](https://github.com/WebAssembly/WASI/blob/main/docs/witx.md)
+- [jedisct1/witx-codegen](https://github.com/jedisct1/witx-codegen)
+- [WASI WITX specification](https://github.com/WebAssembly/WASI/blob/main/phases/ephemeral/witx/)
+- [ryankurte/rust-wasm-hal](https://github.com/ryankurte/rust-wasm-hal)
+- [ryankurte/esp32-wasm-base](https://github.com/ryankurte/esp32-wasm-base)
+- [h1romas4/m5stack-wasm3-testing](https://github.com/h1romas4/m5stack-wasm3-testing)
+- [WASM-bindgen](https://github.com/rustwasm/wasm-bindgen)
+- https://radu-matei.com/blog/practical-guide-to-wasm-memory/
+- https://demille.github.io/wasm-ffi/docs/assemblyscript/
